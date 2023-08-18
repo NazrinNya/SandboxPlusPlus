@@ -1,0 +1,47 @@
+plugins {
+    id 'java-library'
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io/' }
+}
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.example.Main'
+        )
+    }
+    enabled = true
+}
+ext {
+    mindustryVersion = 'v145'
+}
+tasks.withType(JavaCompile) {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://www.jitpack.io/' }
+}
+
+dependencies {
+    compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
+    compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
+    compileOnly "com.github.Anuken.Mindustry:server:$mindustryVersion"
+    implementation "org.json:json:20230618"
+    implementation "org.xerial:sqlite-jdbc:3.7.2"
+}
+
+jar {
+    version = null
+    exclude 'META-INF/.RSA', 'META-INF/.SF','META-INF/*.DSA'
+    duplicatesStrategy=DuplicatesStrategy.EXCLUDE
+
+    archiveFileName = "Sandbox++.jar"
+    from configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Sandbox+",
+  "minGameVersion": "145",
+  "displayName": "Plugin made for Sandbox+",
+  "author": "NazrinNya",
+  "description": "Yeah no",
+  "version": "1.0",
+  "main": "plugin.Main"
+}
