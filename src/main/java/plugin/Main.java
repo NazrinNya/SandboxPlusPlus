@@ -3,13 +3,10 @@ package plugin;
 import arc.Events;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
-import arc.math.geom.Position;
 import arc.struct.Seq;
 import arc.util.CommandHandler;
 import arc.util.Interval;
-import arc.util.Threads;
 import arc.util.Timer;
-import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.StatusEffects;
 import mindustry.game.EventType;
@@ -32,6 +29,7 @@ public class Main extends Plugin{
     public static Seq<DrawTool> draws = new Seq<>();
     public static int coreRadius = 50;
     public static Seq<SetBlock> setBlocks = new Seq<>();
+    public static Interval setBlockLock = new Interval();
     @Override
     public void init(){
         Events.on(EventType.PlayerJoin.class, event -> {
@@ -73,9 +71,7 @@ public class Main extends Plugin{
                     circleDraw(plr, tool.radius, tool.block, tool.type, (int) (plr.mouseX/8), (int) (plr.mouseY/8));
                 }
             }
-        });
-        Timer.schedule(() -> {
-            if (!setBlocks.isEmpty()){
+            if (!setBlockLock.get(0.0015f) && setBlocks.isEmpty()){
                 int random = Mathf.random(setBlocks.size-1);
                 SetBlock setBlock = setBlocks.get(random);
                 if (setBlock.block.isFloor()){
@@ -83,7 +79,7 @@ public class Main extends Plugin{
                 }
                 setBlocks.remove(setBlock);
             }
-        }, 0, 0.0015f);
+        });
     }
 
     //register commands that run on the server
